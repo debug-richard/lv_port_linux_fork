@@ -59,7 +59,7 @@ jobs:
           docker build \
             --build-arg BASE_OS=${{ matrix.os }} \
             -f docker/Dockerfile_rhel \
-            -t test_${{ matrix.os }} -f docker/Dockerfile_RHELl .
+            -t test_${{ matrix.os }} -f docker/Dockerfile_RHEL .
 
       - name: Test building in Docker image
         run: |
