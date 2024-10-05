@@ -13,10 +13,13 @@ jobs:
     strategy:
       matrix:
         os: 
-          - 'debian:bullseye'
-          - 'debian:bookworm'
-          - 'ubuntu:20.04'
-          - 'ubuntu:22.04'
+          - {image: 'debian:bullseye', dockerfile: 'Dockerfile_DEBIAN'}
+          - {image: 'debian:bookworm', dockerfile: 'Dockerfile_DEBIAN'}
+          - {image: 'ubuntu:20.04', dockerfile: 'Dockerfile_DEBIAN'}
+          - {image: 'ubuntu:22.04', dockerfile: 'Dockerfile_DEBIAN'}
+          - {image: 'rockylinux:8', dockerfile: 'Dockerfile_RHEL'}
+          - {image: 'rockylinux:9', dockerfile: 'Dockerfile_RHEL'}
+          - {image: 'oraclelinux:9', dockerfile: 'Dockerfile_RHEL'}
       fail-fast: false
 
     runs-on: ubuntu-latest # This is only the host
@@ -36,42 +39,42 @@ jobs:
         run: |
           docker build \
             --build-arg BASE_OS=${{ matrix.os }} \
-            -f docker/Dockerfile_DEBIAN \
-            -t test_${{ matrix.os }} .
+            -f docker/${{ matrix.os.dockerfile }} \
+            -t test_${{ matrix.os.image }} .
 
       - name: Test building in Docker image
         run: |
           docker run --rm -t -v "$(pwd)":/workdir -t test_${{ matrix.os }} /bin/bash -ec "ls -la && mkdir build/ && cd build/ && cmake .. && make -j"
   
-  build_rhel_based:
-    strategy:
-      matrix:
-        os: 
-        - 'rockylinux:8'
-        - 'rockylinux:9'
-        - 'oraclelinux:9'
-      fail-fast: false
+  # build_rhel_based:
+  #   strategy:
+  #     matrix:
+  #       os: 
+  #       - 'rockylinux:8'
+  #       - 'rockylinux:9'
+  #       - 'oraclelinux:9'
+  #     fail-fast: false
 
-    runs-on: ubuntu-latest # This is only the host
+  #   runs-on: ubuntu-latest # This is only the host
 
-    steps:
-      # Checkout the repository
-      - name: Checkout repository
-        uses: actions/checkout@v3
-        with:
-          submodules: recursive
+  #   steps:
+  #     # Checkout the repository
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v3
+  #       with:
+  #         submodules: recursive
 
-      # Set up Docker Buildx (for multi-platform builds)
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
+  #     # Set up Docker Buildx (for multi-platform builds)
+  #     - name: Set up Docker Buildx
+  #       uses: docker/setup-buildx-action@v2
 
-      - name: Build Docker image
-        run: |
-          docker build \
-            --build-arg BASE_OS=${{ matrix.os }} \
-            -f docker/Dockerfile_rhel \
-            -t test_${{ matrix.os }} -f docker/Dockerfile_RHEL .
+  #     - name: Build Docker image
+  #       run: |
+  #         docker build \
+  #           --build-arg BASE_OS=${{ matrix.os }} \
+  #           -f docker/Dockerfile_rhel \
+  #           -t test_${{ matrix.os }} -f docker/Dockerfile_RHEL .
 
-      - name: Test building in Docker image
-        run: |
-          docker run --rm -t -v "$(pwd)":/workdir -t test_${{ matrix.os }} /bin/bash -ec "ls -la && mkdir build/ && cd build/ && cmake .. && make -j"
+  #     - name: Test building in Docker image
+  #       run: |
+  #         docker run --rm -t -v "$(pwd)":/workdir -t test_${{ matrix.os }} /bin/bash -ec "ls -la && mkdir build/ && cd build/ && cmake .. && make -j"
