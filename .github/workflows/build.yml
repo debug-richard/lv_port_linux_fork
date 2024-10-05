@@ -1,0 +1,35 @@
+name: Build Docker images
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build Debian based:
+    strategy:
+      matrix:
+        os: ['debian:bullseye', 'ubuntu:22.04']
+      fail-fast: false
+
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the repository
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Set up Docker Buildx (for multi-platform builds)
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      # Build the Docker image
+      - name: Build Docker image Debian/Ubuntu
+        run: |
+          docker build \
+            --build-arg DEBIAN_BASED_OS=${{ matrix.os }} \
+            -t test:${{ matrix.os }} .
+
