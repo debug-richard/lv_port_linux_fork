@@ -12,7 +12,11 @@ jobs:
   build_debian_based:
     strategy:
       matrix:
-        os: ['debian:bullseye', 'ubuntu:22.04']
+        os: 
+          - 'debian:bullseye'
+          - 'debian:bookworm'
+          - 'ubuntu:20.04'
+          - 'ubuntu:22.04'
       fail-fast: false
 
     runs-on: ubuntu-latest # This is only the host
@@ -40,7 +44,9 @@ jobs:
   build_rhel_based:
     strategy:
       matrix:
-        os: ['rockylinux:8', 'rockylinux:9']
+        os: 
+        - 'rockylinux:8'
+        - 'rockylinux:9'
       fail-fast: false
 
     runs-on: ubuntu-latest # This is only the host

@@ -4,7 +4,8 @@ FROM "$BASE_OS"
 RUN dnf makecache --refresh
 RUN dnf -y install 'dnf-command(config-manager)'
 RUN dnf repolist --all
-RUN dnf config-manager --set-enabled crb
+RUN dnf config-manager --set-enabled powertools || true
+RUN dnf config-manager --set-enabled crb || true
 RUN dnf -y install epel-release
 RUN dnf makecache --refresh
 
