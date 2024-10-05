@@ -39,3 +39,7 @@ jobs:
         run: |
           docker run --rm -t -v "$(pwd)":/workdir -t test_${{ matrix.os.image }} \
           /bin/bash -ec "mkdir build/ && cd build/ && cmake .. && make -j"
+
+      - name: Print linked libs
+        run: |
+          ldd bin/main
