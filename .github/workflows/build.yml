@@ -9,7 +9,7 @@ on:
       - test-branch
 
 jobs:
-  build Debian based:
+  build_debian_based:
     strategy:
       matrix:
         os: ['debian:bullseye', 'ubuntu:22.04']
