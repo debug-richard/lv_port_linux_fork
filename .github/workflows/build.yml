@@ -44,7 +44,7 @@ jobs:
 
       - name: Test building in Docker image
         run: |
-          docker run --rm -t -v "$(pwd)":/workdir -t test_${{ matrix.os }} /bin/bash -ec "ls -la && mkdir build/ && cd build/ && cmake .. && make -j"
+          docker run --rm -t -v "$(pwd)":/workdir -t test_${{ matrix.os.image }} /bin/bash -ec "ls -la && mkdir build/ && cd build/ && cmake .. && make -j"
   
   # build_rhel_based:
   #   strategy:
