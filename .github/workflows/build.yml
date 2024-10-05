@@ -6,15 +6,15 @@ jobs:
   build:
     strategy:
       matrix:
-        os: 
-          - {image: 'debian:bullseye', dockerfile: 'Dockerfile_DEBIAN'}
-          - {image: 'debian:bookworm', dockerfile: 'Dockerfile_DEBIAN'}
-          - {image: 'ubuntu:20.04', dockerfile: 'Dockerfile_DEBIAN'}
-          - {image: 'ubuntu:22.04', dockerfile: 'Dockerfile_DEBIAN'}
-          - {image: 'rockylinux:8', dockerfile: 'Dockerfile_RHEL'}
-          - {image: 'rockylinux:9', dockerfile: 'Dockerfile_RHEL'}
-          - {image: 'oraclelinux:8', dockerfile: 'Dockerfile_RHEL'}
-          - {image: 'oraclelinux:9', dockerfile: 'Dockerfile_RHEL'}
+        os:
+          - { image: "debian:bullseye", dockerfile: "Dockerfile_DEBIAN" }
+          - { image: "debian:bookworm", dockerfile: "Dockerfile_DEBIAN" }
+          - { image: "ubuntu:20.04", dockerfile: "Dockerfile_DEBIAN" }
+          - { image: "ubuntu:22.04", dockerfile: "Dockerfile_DEBIAN" }
+          - { image: "rockylinux:8", dockerfile: "Dockerfile_RHEL" }
+          - { image: "rockylinux:9", dockerfile: "Dockerfile_RHEL" }
+          - { image: "oraclelinux:8", dockerfile: "Dockerfile_RHEL" }
+          - { image: "oraclelinux:9", dockerfile: "Dockerfile_RHEL" }
       fail-fast: false
 
     runs-on: ubuntu-latest # This is only the host
@@ -41,8 +41,7 @@ jobs:
           sed -i "s/^#define LV_USE_LINUX_DRM.*$/#define LV_USE_LINUX_DRM 0/g" lv_conf.h && \
           sed -i "s/^#define LV_USE_SDL.*$/#define LV_USE_SDL 0/g" lv_conf.h && \
           docker run --rm -t -v "$(pwd)":/workdir -t test_${{ matrix.os.image }} \
-          /bin/bash -ec "mkdir build/ && cd build/ && cmake .. && make -j" \
-          && ldd bin/main
+          /bin/bash -ec "mkdir build/ && cd build/ && cmake .. && make -j && ldd bin/main"
 
       - name: DRM Test building project
         run: |
@@ -51,8 +50,7 @@ jobs:
           sed -i "s/^#define LV_USE_LINUX_DRM.*$/#define LV_USE_LINUX_DRM 1/g" lv_conf.h && \
           sed -i "s/^#define LV_USE_SDL.*$/#define LV_USE_SDL 0/g" lv_conf.h && \
           docker run --rm -t -v "$(pwd)":/workdir -t test_${{ matrix.os.image }} \
-          /bin/bash -ec "mkdir build/ && cd build/ && cmake .. && make -j" \
-          && ldd bin/main
+          /bin/bash -ec "mkdir build/ && cd build/ && cmake .. && make -j && ldd bin/main"
 
       - name: SDL Test building project
         run: |
@@ -61,5 +59,4 @@ jobs:
           sed -i "s/^#define LV_USE_LINUX_DRM.*$/#define LV_USE_LINUX_DRM 0/g" lv_conf.h && \
           sed -i "s/^#define LV_USE_SDL.*$/#define LV_USE_SDL 1/g" lv_conf.h && \
           docker run --rm -t -v "$(pwd)":/workdir -t test_${{ matrix.os.image }} \
-          /bin/bash -ec "mkdir build/ && cd build/ && cmake .. && make -j" \
-          && ldd bin/main
+          /bin/bash -ec "mkdir build/ && cd build/ && cmake .. && make -j && ldd bin/main"
