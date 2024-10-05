@@ -46,7 +46,7 @@ jobs:
 
       - name: DRM Test building project
         run: |
-          rm -Rf build/ bin/ \
+          sudo rm -Rf build/ bin/ && \
           sed -i "s/^#define LV_USE_LINUX_FBDEV.*$/#define LV_USE_LINUX_FBDEV 0/g" lv_conf.h && \
           sed -i "s/^#define LV_USE_LINUX_DRM.*$/#define LV_USE_LINUX_DRM 1/g" lv_conf.h && \
           sed -i "s/^#define LV_USE_SDL.*$/#define LV_USE_SDL 0/g" lv_conf.h && \
@@ -56,7 +56,7 @@ jobs:
 
       - name: SDL Test building project
         run: |
-          rm -Rf build/ bin/ \
+          sudo rm -Rf build/ bin/ && \
           sed -i "s/^#define LV_USE_LINUX_FBDEV.*$/#define LV_USE_LINUX_FBDEV 0/g" lv_conf.h && \
           sed -i "s/^#define LV_USE_LINUX_DRM.*$/#define LV_USE_LINUX_DRM 0/g" lv_conf.h && \
           sed -i "s/^#define LV_USE_SDL.*$/#define LV_USE_SDL 1/g" lv_conf.h && \
