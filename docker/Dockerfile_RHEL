@@ -1,5 +1,5 @@
 ARG BASE_OS
-FROM "BASE_OS"
+FROM "$BASE_OS"
 
 RUN dnf install SDL2-devel SDL2_image-devel
 

@@ -1,5 +1,5 @@
 ARG BASE_OS
-FROM "BASE_OS"
+FROM "$BASE_OS"
 
 RUN DEBIAN_FRONTEND="noninteractive" apt-get update
 
