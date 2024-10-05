@@ -38,7 +38,7 @@ jobs:
       - name: Build Docker image
         run: |
           docker build \
-            --build-arg BASE_OS=${{ matrix.os }} \
+            --build-arg BASE_OS=${{ matrix.os.image }} \
             -f docker/${{ matrix.os.dockerfile }} \
             -t test_${{ matrix.os.image }} .
 
