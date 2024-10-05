@@ -20,7 +20,7 @@ target_include_directories(lvgl PRIVATE ${SDL2_INCLUDE_DIRS})
 target_include_directories(lvgl PRIVATE ${SDL2_IMAGE_INCLUDE_DIRS})
 target_include_directories(lvgl PRIVATE ${LIBDRM_INCLUDE_DIRS})
 
-target_link_libraries(main PRIVATE lvgl)
+target_link_libraries(main PRIVATE lvgl) # Add '-static' if you want a standalone binary
 target_link_libraries(main PRIVATE lvgl::examples)
 target_link_libraries(main PRIVATE lvgl::demos)
 target_link_libraries(main PRIVATE lvgl::thorvg)
