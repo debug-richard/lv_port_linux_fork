@@ -1,3 +1,4 @@
+ARG DEBIAN_BASED_OS
 FROM "$DEBIAN_BASED_OS"
 
 RUN DEBIAN_FRONTEND="noninteractive" apt-get update
