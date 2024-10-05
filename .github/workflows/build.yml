@@ -3,10 +3,10 @@ name: Build Docker images
 on:
   push:
     branches:
-      - main
+      - test-branch
   pull_request:
     branches:
-      - main
+      - test-branch
 
 jobs:
   build Debian based:
