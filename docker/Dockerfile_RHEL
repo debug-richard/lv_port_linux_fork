@@ -1,7 +1,19 @@
 ARG BASE_OS
 FROM "$BASE_OS"
 
-RUN dnf install SDL2-devel SDL2_image-devel
+RUN dnf makecache --refresh
+RUN dnf -y install 'dnf-command(config-manager)'
+RUN dnf config-manager --set-enabled crb
+RUN dnf -y install epel-release
+RUN dnf makecache --refresh
+
+
+RUN dnf -y groupinstall "Development Tools"
+RUN dnf -y install cmake
+
+RUN dnf -y install SDL2-devel SDL2_image-devel
+
+RUN dnf -y install libdrm-devel
 
 RUN mkdir /workdir
 WORKDIR /workdir
