@@ -1,5 +1,5 @@
-ARG DEBIAN_BASED_OS
-FROM "$DEBIAN_BASED_OS"
+ARG BASE_OS
+FROM "BASE_OS"
 
 RUN DEBIAN_FRONTEND="noninteractive" apt-get update
 
@@ -19,7 +19,3 @@ RUN mkdir /workdir
 WORKDIR /workdir
 # RUN ls -la
 # RUN mkdir build/ && cd build/ && cmake .. && make -j
-
-#export C_INCLUDE_PATH=/usr/include/libdrm:$C_INCLUDE_PATH
-
-

@@ -15,7 +15,7 @@ jobs:
         os: ['debian:bullseye', 'ubuntu:22.04']
       fail-fast: false
 
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest # This is only the host
 
     steps:
       # Checkout the repository
@@ -29,8 +29,37 @@ jobs:
       - name: Build Docker image
         run: |
           docker build \
-            --build-arg DEBIAN_BASED_OS=${{ matrix.os }} \
+            --build-arg BASE_OS=${{ matrix.os }} \
+            -f docker/Dockerfile_DEBIAN \
             -t test_${{ matrix.os }} .
+
+      - name: Test building in Docker image
+        run: |
+          docker run --rm -it -v "$(pwd)":/builddir -t test_${{ matrix.os }} cd builddir && ls -la mkdir build/ && cd build/ && cmake .. && make -j
+  
+  build_rhel_based:
+    strategy:
+      matrix:
+        os: ['rockylinux:8', 'rockylinux:9']
+      fail-fast: false
+
+    runs-on: ubuntu-latest # This is only the host
+
+    steps:
+      # Checkout the repository
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Set up Docker Buildx (for multi-platform builds)
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Build Docker image
+        run: |
+          docker build \
+            --build-arg BASE_OS=${{ matrix.os }} \
+            -f docker/Dockerfile_rhel \
+            -t test_${{ matrix.os }} -f docker/Dockerfile_RHELl .
 
       - name: Test building in Docker image
         run: |
