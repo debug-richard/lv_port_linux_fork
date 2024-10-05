@@ -35,7 +35,7 @@ jobs:
 
       - name: Test building in Docker image
         run: |
-          docker run --rm -it -v "$(pwd)":/builddir -t test_${{ matrix.os }} cd builddir && ls -la mkdir build/ && cd build/ && cmake .. && make -j
+          docker run --rm -t -v "$(pwd)":/builddir -t test_${{ matrix.os }} cd builddir && ls -la mkdir build/ && cd build/ && cmake .. && make -j
   
   build_rhel_based:
     strategy:
@@ -63,4 +63,4 @@ jobs:
 
       - name: Test building in Docker image
         run: |
-          docker run --rm -it -v "$(pwd)":/builddir -t test_${{ matrix.os }} cd builddir && ls -la mkdir build/ && cd build/ && cmake .. && make -j
+          docker run --rm -t -v "$(pwd)":/builddir -t test_${{ matrix.os }} cd builddir && ls -la mkdir build/ && cd build/ && cmake .. && make -j
