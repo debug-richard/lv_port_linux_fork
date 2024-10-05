@@ -26,10 +26,12 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
-      # Build the Docker image
-      - name: Build Docker image Debian/Ubuntu
+      - name: Build Docker image
         run: |
           docker build \
             --build-arg DEBIAN_BASED_OS=${{ matrix.os }} \
-            -t test:${{ matrix.os }} .
+            -t test_${{ matrix.os }} .
 
+      - name: Test building in Docker image
+        run: |
+          docker run --rm -it -v "$(pwd)":/builddir -t test_${{ matrix.os }} cd builddir; ls -la
