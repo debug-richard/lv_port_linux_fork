@@ -25,6 +25,8 @@ jobs:
       # Checkout the repository
       - name: Checkout repository
         uses: actions/checkout@v3
+        with:
+          submodules: recursive
 
       # Set up Docker Buildx (for multi-platform builds)
       - name: Set up Docker Buildx
@@ -47,6 +49,7 @@ jobs:
         os: 
         - 'rockylinux:8'
         - 'rockylinux:9'
+        - 'oraclelinux:9'
       fail-fast: false
 
     runs-on: ubuntu-latest # This is only the host
@@ -55,6 +58,8 @@ jobs:
       # Checkout the repository
       - name: Checkout repository
         uses: actions/checkout@v3
+        with:
+          submodules: recursive
 
       # Set up Docker Buildx (for multi-platform builds)
       - name: Set up Docker Buildx
