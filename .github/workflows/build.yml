@@ -17,7 +17,7 @@ jobs:
           - { image: "oraclelinux:9", dockerfile: "Dockerfile_RHEL" }
       fail-fast: false
 
-    runs-on: ubuntu-latest # This is only the host
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
@@ -28,35 +28,35 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
-      - name: Build Docker image
+      - name: Build the Docker image
         run: |
           docker build \
             --build-arg BASE_OS=${{ matrix.os.image }} \
             -f docker/${{ matrix.os.dockerfile }} \
             -t test_${{ matrix.os.image }} .
 
-      - name: FBDEV Test building project
+      - name: FBDEV Test building the project
         run: |
           sed -i "s/^#define LV_USE_LINUX_FBDEV.*$/#define LV_USE_LINUX_FBDEV 1/g" lv_conf.h && \
           sed -i "s/^#define LV_USE_LINUX_DRM.*$/#define LV_USE_LINUX_DRM 0/g" lv_conf.h && \
           sed -i "s/^#define LV_USE_SDL.*$/#define LV_USE_SDL 0/g" lv_conf.h && \
-          docker run --rm -t -v "$(pwd)":/workdir -t test_${{ matrix.os.image }} \
+          docker run --rm -v "$(pwd)":/workdir -t test_${{ matrix.os.image }} \
           /bin/bash -ec "mkdir build/ && cd build/ && cmake .. && make -j && ldd ../bin/main"
 
-      - name: DRM Test building project
+      - name: DRM Test building the project
         run: |
           sudo rm -Rf build/ bin/ && \
           sed -i "s/^#define LV_USE_LINUX_FBDEV.*$/#define LV_USE_LINUX_FBDEV 0/g" lv_conf.h && \
           sed -i "s/^#define LV_USE_LINUX_DRM.*$/#define LV_USE_LINUX_DRM 1/g" lv_conf.h && \
           sed -i "s/^#define LV_USE_SDL.*$/#define LV_USE_SDL 0/g" lv_conf.h && \
-          docker run --rm -t -v "$(pwd)":/workdir -t test_${{ matrix.os.image }} \
+          docker run --rm -v "$(pwd)":/workdir -t test_${{ matrix.os.image }} \
           /bin/bash -ec "mkdir build/ && cd build/ && cmake .. && make -j && ldd ../bin/main"
 
-      - name: SDL Test building project
+      - name: SDL Test building the project
         run: |
           sudo rm -Rf build/ bin/ && \
           sed -i "s/^#define LV_USE_LINUX_FBDEV.*$/#define LV_USE_LINUX_FBDEV 0/g" lv_conf.h && \
           sed -i "s/^#define LV_USE_LINUX_DRM.*$/#define LV_USE_LINUX_DRM 0/g" lv_conf.h && \
           sed -i "s/^#define LV_USE_SDL.*$/#define LV_USE_SDL 1/g" lv_conf.h && \
-          docker run --rm -t -v "$(pwd)":/workdir -t test_${{ matrix.os.image }} \
+          docker run --rm -v "$(pwd)":/workdir -t test_${{ matrix.os.image }} \
           /bin/bash -ec "mkdir build/ && cd build/ && cmake .. && make -j && ldd ../bin/main"

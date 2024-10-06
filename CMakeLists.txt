@@ -10,7 +10,7 @@ set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
 add_subdirectory(lvgl)
 add_executable(main main.c mouse_cursor_icon.c)
 
-find_package(PkgConfig REQUIRED) # We use platform independent pkg-config to find all the libs
+find_package(PkgConfig REQUIRED) # We use the platform independent pkg-config to find all the libs
 pkg_check_modules(LIBDRM REQUIRED libdrm)
 pkg_check_modules(SDL2 REQUIRED sdl2)
 pkg_check_modules(SDL2_image REQUIRED SDL2_image)

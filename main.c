@@ -16,7 +16,7 @@ static void lv_linux_init_input_pointer(lv_display_t *disp)
 {
     // Enables a pointer (touchscreen/mouse) input device
     // Use 'evtest' to find the correct input device. /dev/input/by-id/ is recommeded if possible
-    // /dev/input/by-id/my-mouse-or-touchscreen or /dev/input/eventX
+    // Use /dev/input/by-id/my-mouse-or-touchscreen or /dev/input/eventX
     const char *input_device = getenv_default("LV_LINUX_EVDEV_POINTER_DEVICE", "/dev/input/by-id/my-mouse-or-touchscreen");
     lv_indev_t *touch = lv_evdev_create(LV_INDEV_TYPE_POINTER, input_device); 
     lv_indev_set_display(touch, disp);
